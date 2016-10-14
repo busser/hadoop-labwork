@@ -27,5 +27,5 @@ Build a .jar file with the Q1.java, Q2.java, Q3.java files. A pom.xml is provide
 
 On the Hadoop server, run the following command:
 ```
-hadoop jar <jar file> <input file(s)> <output folder>
+hadoop jar <jar file> <Q1, Q2, or Q3> <input file or folder> <output folder>
 ```
