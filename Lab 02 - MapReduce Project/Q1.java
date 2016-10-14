@@ -50,7 +50,7 @@ public class Q1 {
         Job job = Job.getInstance(conf, "name count by origin");
         job.setJarByClass(Q1.class);
         job.setMapperClass(Q1Mapper.class);
-        //job.setCombinerClass(Q1Reducer.class); // No combiner
+        job.setCombinerClass(Q1Reducer.class);
         job.setReducerClass(Q1Reducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);

@@ -35,13 +35,31 @@ public class Q3 {
         }
     }
 
+    public static class Q3Combiner extends Reducer<Text, FloatWritable, Text, FloatWritable> {
+        
+        private FloatWritable result = new FloatWritable();
+
+        public void reduce(Text key, Iterable<FloatWritable> values, Context context) throws IOException, InterruptedException {
+            
+            float sum = 0;
+            for (FloatWritable val : values) {
+                sum += val.get();
+            }
+
+            result.set(sum);
+            context.write(key, result);
+
+        }
+
+    }
+
     public static class Q3Reducer extends Reducer<Text, FloatWritable, Text, FloatWritable> {
         
         private FloatWritable result = new FloatWritable();
 
         public void reduce(Text key, Iterable<FloatWritable> values, Context context) throws IOException, InterruptedException {
             
-            int sum = 0;
+            float sum = 0;
             for (FloatWritable val : values) {
                 sum += val.get();
             }
@@ -50,7 +68,7 @@ public class Q3 {
             Cluster cluster = new Cluster(context.getConfiguration());
             long nameCount = cluster.getJob(context.getJobID()).getCounters().findCounter(inputCounter.n).getValue();
 
-            result.set((float) sum / nameCount);
+            result.set(sum / nameCount);
             context.write(key, result);
 
         }
@@ -62,7 +80,7 @@ public class Q3 {
         Job job = Job.getInstance(conf, "gender proportion");
         job.setJarByClass(Q3.class);
         job.setMapperClass(Q3Mapper.class);
-        //job.setCombinerClass(Q3Reducer.class); // No combiner
+        job.setCombinerClass(Q3Combiner.class);
         job.setReducerClass(Q3Reducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(FloatWritable.class);
