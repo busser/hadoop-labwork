@@ -34,7 +34,8 @@ hadoop jar <jar file> <Q1, Q2, or Q3> <input file or folder> <output folder>
 
 ### Objective
 Write Hive queries in HQL to solve simple problems with Hadoop and Hive.
-*These are the same problems than in Lab 02*
+
+*These are the same problems than in Lab 02.*
 
 **Q1**: Find the number of first names for each origin.
 
