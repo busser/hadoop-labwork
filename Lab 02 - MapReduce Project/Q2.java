@@ -25,7 +25,10 @@ public class Q2 {
             String[] genders = parts[1].split(",\\ ?");
             String[] origins = parts[2].split(",\\ ?");
             // Map names to number of origins
-            count.set(origins.length);
+            if (origins.length > 1 || !origins[0].isEmpty())
+                count.set(origins.length);
+            else
+                count.set(0);
             context.write(count, one);
         }
     }
