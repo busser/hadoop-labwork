@@ -68,7 +68,7 @@ public class Q3 {
             Cluster cluster = new Cluster(context.getConfiguration());
             long nameCount = cluster.getJob(context.getJobID()).getCounters().findCounter(inputCounter.n).getValue();
 
-            result.set(sum / nameCount);
+            result.set(sum / nameCount * 100.0);
             context.write(key, result);
 
         }
