@@ -29,3 +29,23 @@ On the Hadoop server, run the following command:
 ```
 hadoop jar <jar file> <Q1, Q2, or Q3> <input file or folder> <output folder>
 ```
+
+## Lab 02 bis.
+
+### Objective
+Write Hive queries in HQL to solve simple problems with Hadoop and Hive.
+*These are the same problems than in Lab 02*
+
+**Q1**: Find the number of first names for each origin.
+
+**Q2**: Find the number of first names for each number of origins.
+
+**Q3**: Find the proportion for each gender.
+
+### Instructions
+On the Hadoop server, run the following command:
+```
+hive
+```
+
+Type in the HQL queries from lab2bis.hql as needed.
