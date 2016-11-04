@@ -39,14 +39,14 @@ public class SocialNetwork {
         if (!admin.tableExists("flefloch")){
             this.tablename = "flefloch";
             String[] familys = {"info", "friends"};
-            creatTable(tablename, familys);
+            createTable(tablename, familys);
         }
     }
 
     /**
      * Create a table
      */
-    public static void creatTable(String tableName, String[] familys)
+    public static void createTable(String tableName, String[] familys)
             throws Exception {
         HBaseAdmin admin = new HBaseAdmin(conf);
         if (admin.tableExists(tableName)) {
@@ -83,27 +83,22 @@ public class SocialNetwork {
     public void addPerson(String firstName, String lastName, String birthDate, String email, String city, String bff, List<String> friends)
                             throws Exception {
 
-        try {
-            HTable table = new HTable(conf, tablename);
-            Put put = new Put(Bytes.toBytes(firstName));
-            if (lastName != null)
-                put.add(Bytes.toBytes("info"), Bytes.toBytes("lastname"), Bytes.toBytes(lastName));
-            if (birthDate != null)
-                put.add(Bytes.toBytes("info"), Bytes.toBytes("birthDate"), Bytes.toBytes(birthDate));
-            if (email != null)
-                put.add(Bytes.toBytes("info"), Bytes.toBytes("email"), Bytes.toBytes(email));
-            if (city != null)
-                put.add(Bytes.toBytes("info"), Bytes.toBytes("city"), Bytes.toBytes(city));
-            put.add(Bytes.toBytes("friends"), Bytes.toBytes("bff"), Bytes.toBytes(bff));
-            if (!friends.isEmpty()) {
-                for (String friend : friends)
-                    put.add(Bytes.toBytes("friends"), Bytes.toBytes("others"), Bytes.toBytes(friend));
-            }
-            table.put(put);
-            System.out.println("insert recored " + firstName + " to table " + tablename + " ok.");
-        } catch (IOException e) {
-            System.out.println("Problem occured during the adding");
+        HTable table = new HTable(conf, tablename);
+        Put put = new Put(Bytes.toBytes(firstName));
+        if (lastName != null)
+            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("lastname"), Bytes.toBytes(lastName));
+        if (birthDate != null)
+            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("birthDate"), Bytes.toBytes(birthDate));
+        if (email != null)
+            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("email"), Bytes.toBytes(email));
+        if (city != null)
+            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("city"), Bytes.toBytes(city));
+        put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("bff"), Bytes.toBytes(bff));
+        if (!friends.isEmpty()) {
+            for (String friend : friends)
+                put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("others"), Bytes.toBytes(friend));
         }
+        table.put(put);
     }
 
     /**
