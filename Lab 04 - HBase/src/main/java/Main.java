@@ -7,15 +7,14 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        //SocialNetwork sn = new SocialNetwork();
+        try {
+            SocialNetwork sn = new SocialNetwork();
+            System.out.println("Connection to HBase successful.");
+        } catch (Exception e) {
+            System.out.println("Connection to HBase failed. Closing...");
+            System.exit(1);
+        }
 
-        String firstName;
-        String lastName;
-        String birthDate;
-        String email;
-        String city;
-        String bff;
-        List<String> otherFriends;
 
         System.out.println("Welcome to our HBase REPL.");
         System.out.println("Possible commands:");
@@ -45,6 +44,7 @@ public class Main {
 
                         Map<String, String> parameters = new HashMap<String, String>();
                         for (int i = 2; i < inputList.size(); i++) {
+                            String[] splitParameters = inputList.get(i).split("=", 2)
                             parameters.put(inputList.get(i).split("=", 2)[0], inputList.get(i).split("=", 2)[1]);
                         }
 
@@ -69,11 +69,16 @@ public class Main {
 
                         } else {
 
-                            // Call SocialNetwork method addPerson here
+                            try {
+                                sn.addPerson(parameters.get("firstname"), parameters.get("lastname"), parameters.get("birthdate"),
+                                        parameters.get("email"), parameters.get("city"), parameters.get("bff"),
+                                        Arrays.asList(parameters.get("otherFriends").split(",")));
+                                System.out.println("Person '" + parameters.get("firstname") + "' added successfully.");
+                            } catch (Exception e) {
+                                System.out.println("There was a problem when adding person '" + parameters.get("firstname") + "'.");
+                            }
 
                         }
-
-                        //sn.addPerson(firstName, lastName, birthDate, email, city, bff, otherFriends);
 
                     } else {
 
