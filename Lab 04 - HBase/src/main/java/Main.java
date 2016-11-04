@@ -26,6 +26,7 @@ public class Main {
                          + "           bff=<string>\n"
                          + "           [lastname=<string>]\n"
                          + "           [birthdate=<string>]\n"
+                         + "           [city=<string>]\n"
                          + "           [email=<string>]\n"
                          + "           [otherfriends=<string>,<string>,<string>]"
         );
@@ -74,12 +75,12 @@ public class Main {
                         } else {
 
                             String otherFriends = parameters.get("otherFriends");
+                            Person person = new Person(parameters.get("firstname"), parameters.get("lastname"), parameters.get("birthdate"),
+                                    parameters.get("email"), parameters.get("city"), parameters.get("bff"),
+                                    otherFriends == null ? null : Arrays.asList(otherFriends.split(",")));
 
                             try {
-                                sn.addPerson(parameters.get("firstname"), parameters.get("lastname"), parameters.get("birthdate"),
-                                        parameters.get("email"), parameters.get("city"), parameters.get("bff"),
-                                        otherFriends == null ? null : Arrays.asList(otherFriends.split(",")));
-                                System.out.println("Person '" + parameters.get("firstname") + "' added successfully.");
+                                sn.addPerson(person);
                             } catch (Exception e) {
                                 System.out.println("There was a problem when adding person '" + parameters.get("firstname") + "'.");
                                 e.printStackTrace();

@@ -81,23 +81,23 @@ public class SocialNetwork {
     /**
      * Put (or insert) a row
      */
-    public void addPerson(String firstName, String lastName, String birthDate, String email, String city, String bff, List<String> friends)
+    public void addPerson(Person person)
             throws Exception {
 
         HTable table = new HTable(conf, tablename);
 
-        Put put = new Put(Bytes.toBytes(firstName));
-        if (lastName != null)
-            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("lastname"), Bytes.toBytes(lastName));
-        if (birthDate != null)
-            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("birthDate"), Bytes.toBytes(birthDate));
-        if (email != null)
-            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("email"), Bytes.toBytes(email));
-        if (city != null)
-            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("city"), Bytes.toBytes(city));
-        put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("bff"), Bytes.toBytes(bff));
-        if (friends != null && !friends.isEmpty()) {
-            for (String friend : friends)
+        Put put = new Put(Bytes.toBytes(person.getFirstName()));
+        if (person.getLastName() != null)
+            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("lastname"), Bytes.toBytes(person.getLastName()));
+        if (person.getBirthDate() != null)
+            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("birthDate"), Bytes.toBytes(person.getBirthDate()));
+        if (person.getEmail() != null)
+            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("email"), Bytes.toBytes(person.getEmail()));
+        if (person.getCity() != null)
+            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("city"), Bytes.toBytes(person.getCity()));
+        put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("bff"), Bytes.toBytes(person.getBff()));
+        if (person.getOtherFriends() != null && !person.getOtherFriends().isEmpty()) {
+            for (String friend : person.getOtherFriends())
                 put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("others"), Bytes.toBytes(friend));
 
         }
