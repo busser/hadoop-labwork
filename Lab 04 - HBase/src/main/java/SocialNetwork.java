@@ -1,8 +1,5 @@
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
@@ -157,6 +154,18 @@ public class SocialNetwork {
         if (result.size() == 0){
             return false;
         } else {return true;}
+    }
+
+    public List<String> getGhostBffs() throws IOException {
+        List<Person> people = getPersonAll();
+        Set<String> ghostBffs = new HashSet<String>();
+        for (Person person : people) {
+            if (!personExists(person.getBff())) {
+                ghostBffs.add(person.getBff());
+            }
+        }
+        List<String> ghostBffsList = new ArrayList<String>(ghostBffs);
+        return ghostBffsList;
     }
 
 }

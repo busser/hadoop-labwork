@@ -191,8 +191,21 @@ public class Main {
 
                     if (inputList.size() > 1 && inputList.get(1).equals("consistency")) {
 
-                        // Call checkConsistency method here and display results
-                        System.out.println("Wether the data is consistent will be displayed here.");
+                        List<String> ghostBffs = sn.getGhostBffs();
+                        System.out.println("BFF's not in our database:");
+                        for (String ghostBff : ghostBffs) {
+                            System.out.println(ghostBff);
+                        }
+                        System.out.println("Total number of ghost BFF's: " + ghostBffs.size());
+                        if (ghostBffs.size() == 0) {
+                            System.out.println("The data is consistent.");
+                        } else {
+                            System.out.println("There are inconsistencies in the data.");
+                        }
+
+                    } else {
+
+                        System.out.println("Unknown use of the 'check' command.");
 
                     }
 
