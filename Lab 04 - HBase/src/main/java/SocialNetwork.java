@@ -81,7 +81,7 @@ public class SocialNetwork {
      * Put (or insert) a row
      */
     public void addPerson(String firstName, String lastName, String birthDate, String email, String city, String bff, List<String> friends)
-                            throws Exception {
+            throws Exception {
 
         HTable table = new HTable(conf, tablename);
         Put put = new Put(Bytes.toBytes(firstName));
@@ -97,6 +97,7 @@ public class SocialNetwork {
         if (!friends.isEmpty()) {
             for (String friend : friends)
                 put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("others"), Bytes.toBytes(friend));
+
         }
         table.put(put);
     }
