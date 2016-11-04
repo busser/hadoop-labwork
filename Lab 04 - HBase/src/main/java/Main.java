@@ -1,4 +1,4 @@
-import com.sun.deploy.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
@@ -18,6 +18,9 @@ public class Main {
         }
 
         System.out.println("Welcome to our HBase REPL.");
+
+        sn.getAllRecord("flefloch");
+
         System.out.println("Possible commands:");
         System.out.println("add person firstname=<string>\n"
                          + "           bff=<string>\n"
@@ -70,13 +73,16 @@ public class Main {
 
                         } else {
 
+                            String otherFriends = parameters.get("otherFriends");
+
                             try {
                                 sn.addPerson(parameters.get("firstname"), parameters.get("lastname"), parameters.get("birthdate"),
                                         parameters.get("email"), parameters.get("city"), parameters.get("bff"),
-                                        Arrays.asList(parameters.get("otherFriends").split(",")));
+                                        otherFriends == null ? null : Arrays.asList(otherFriends.split(",")));
                                 System.out.println("Person '" + parameters.get("firstname") + "' added successfully.");
                             } catch (Exception e) {
                                 System.out.println("There was a problem when adding person '" + parameters.get("firstname") + "'.");
+                                e.printStackTrace();
                             }
 
                         }

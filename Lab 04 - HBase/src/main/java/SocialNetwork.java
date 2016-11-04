@@ -32,12 +32,13 @@ public class SocialNetwork {
      */
     static {
         conf = HBaseConfiguration.create();
+        conf.set("zookeeper.znode.parent", "/hbase-unsecure");
     }
 
     public SocialNetwork() throws Exception {
         HBaseAdmin admin = new HBaseAdmin(conf);
+        this.tablename = "flefloch";
         if (!admin.tableExists("flefloch")){
-            this.tablename = "flefloch";
             String[] familys = {"info", "friends"};
             createTable(tablename, familys);
         }
@@ -84,6 +85,7 @@ public class SocialNetwork {
             throws Exception {
 
         HTable table = new HTable(conf, tablename);
+
         Put put = new Put(Bytes.toBytes(firstName));
         if (lastName != null)
             put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("lastname"), Bytes.toBytes(lastName));
@@ -94,7 +96,7 @@ public class SocialNetwork {
         if (city != null)
             put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("city"), Bytes.toBytes(city));
         put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("bff"), Bytes.toBytes(bff));
-        if (!friends.isEmpty()) {
+        if (friends != null && !friends.isEmpty()) {
             for (String friend : friends)
                 put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("others"), Bytes.toBytes(friend));
 
