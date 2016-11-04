@@ -104,55 +104,62 @@ public class SocialNetwork {
         table.put(put);
     }
 
-    /**
-     * Delete a row
-     */
-    public static void delRecord(String tableName, String rowKey)
-            throws IOException {
-        HTable table = new HTable(conf, tableName);
+    public void delPerson(String firstname) throws IOException {
+        HTable table = new HTable(conf, tablename);
         List<Delete> list = new ArrayList<Delete>();
-        Delete del = new Delete(rowKey.getBytes());
+        Delete del = new Delete(firstname.getBytes());
         list.add(del);
         table.delete(list);
-        System.out.println("del recored " + rowKey + " ok.");
     }
 
-    /**
-     * Get a row
-     */
-    public static void getOneRecord (String tableName, String rowKey) throws IOException{
+    public List<String> getPersonAll()throws IOException{
         HTable table = new HTable(conf, tableName);
-        Get get = new Get(rowKey.getBytes());
+        List<String> people = new ArrayList<String>();
+        Scan s = new Scan();
+        ResultScanner ss = table.getScanner(s);
+        for (Result rr : ss) {
+            people.add(Bytes.toString(rr.getRow());
+        }
+
+        return people;
+
+    }
+
+    public Person getPerson(String firstname) throws Exception{
+        HTable table = new HTable(conf, tablename);
+        Get get = new Get(firstname.getBytes());
         Result rs = table.get(get);
+        if (rs.size() == 0){
+            throw new Exception();
+        }
+        Person person = new Person (firstName, null, null, null, null, null, null);
         for(KeyValue kv : rs.raw()){
-            System.out.print(new String(kv.getRow()) + " " );
-            System.out.print(new String(kv.getFamily()) + ":" );
-            System.out.print(new String(kv.getQualifier()) + " " );
-            System.out.print(kv.getTimestamp() + " " );
-            System.out.println(new String(kv.getValue()));
-        }
-    }
-    /**
-     * Scan (or list) a table
-     */
-    public static void getAllRecord (String tableName) {
-        try{
-            HTable table = new HTable(conf, tableName);
-            Scan s = new Scan();
-            ResultScanner ss = table.getScanner(s);
-            for(Result r:ss){
-                for(KeyValue kv : r.raw()){
-                    System.out.print(new String(kv.getRow()) + " ");
-                    System.out.print(new String(kv.getFamily()) + ":");
-                    System.out.print(new String(kv.getQualifier()) + " ");
-                    System.out.print(kv.getTimestamp() + " ");
-                    System.out.println(new String(kv.getValue()));
-                }
+            switch(kv.getFamily()){
+                case "info":
+                    switch (kv.getQualifier()){
+                        case "lastname": person.setLastName(Bytes.toString(kv.getValue());
+                            break;
+                        case "email": person.setEmail(Bytes.toString(kv.getValue());
+                            break;
+                        case "birthDate": person.setBirthDate(Bytes.toString(kv.getValue());
+                            break;
+                        case "city": person.setCity(Bytes.toString(kv.getValue());
+                            break;
+                    }
+                break;
+                case "friends":
+                    switch (kv.getQualifier()){
+                        case "bff": person.setBff(Bytes.toString(kv.getValue());
+                            break;
+                        case "others": person.setOtherFriends(Bytes.toString(kv.getValue());
+                    }
             }
-        } catch (IOException e){
-            e.printStackTrace();
+
         }
+        return person;
+
     }
+
 
     public boolean personExists(String firstname) throws IOException {
         HTable table = new HTable(conf, tablename);
