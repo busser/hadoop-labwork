@@ -7,14 +7,15 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        SocialNetwork sn = null;
+
         try {
-            SocialNetwork sn = new SocialNetwork();
+            sn = new SocialNetwork();
             System.out.println("Connection to HBase successful.");
         } catch (Exception e) {
             System.out.println("Connection to HBase failed. Closing...");
             System.exit(1);
         }
-
 
         System.out.println("Welcome to our HBase REPL.");
         System.out.println("Possible commands:");
@@ -44,7 +45,7 @@ public class Main {
 
                         Map<String, String> parameters = new HashMap<String, String>();
                         for (int i = 2; i < inputList.size(); i++) {
-                            String[] splitParameters = inputList.get(i).split("=", 2)
+                            String[] splitParameters = inputList.get(i).split("=", 2);
                             parameters.put(inputList.get(i).split("=", 2)[0], inputList.get(i).split("=", 2)[1]);
                         }
 
