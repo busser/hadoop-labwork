@@ -30,7 +30,7 @@ On the Hadoop server, run the following command:
 hadoop jar <jar file> <Q1, Q2, or Q3> <input file or folder> <output folder>
 ```
 
-## Lab 02 bis.
+## Lab 03
 
 ### Objective
 Write Hive queries in HQL to solve simple problems with Hadoop and Hive.
