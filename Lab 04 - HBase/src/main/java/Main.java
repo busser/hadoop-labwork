@@ -19,8 +19,6 @@ public class Main {
 
         System.out.println("\nWelcome to our HBase REPL.\n");
 
-        sn.getAllRecord("flefloch");
-
         System.out.println("Possible commands:");
         System.out.println("add person firstname=<string>\n"
                          + "           bff=<string>\n"
@@ -32,6 +30,7 @@ public class Main {
         );
         System.out.println("delete person firstname=<string>");
         System.out.println("show person firstname=<string>");
+        System.out.println("show all");
         System.out.println("check consistency");
         System.out.println("exit");
 
@@ -123,7 +122,7 @@ public class Main {
 
                         } else {
 
-                            // Call deletePerson method here
+                            sn.deletePerson(parameters.get("firstname"));
 
                         }
 
@@ -159,8 +158,28 @@ public class Main {
                         } else {
 
                             // Call getPerson method here and display the person
+                            try {
+                                Person person = sn.getPerson(parameters.get("firstname"));
+                                System.out.println("First Name:    " + person.getFirstName());
+                                System.out.println("Last Name:     " + person.getLastName());
+                                System.out.println("Birth Date:    " + person.getBirthDate());
+                                System.out.println("City:          " + person.getCity());
+                                System.out.println("Email:         " + person.getEmail());
+                                System.out.println("Best Friend:   " + person.getBff());
+                                System.out.println("Other Friends: " + (person.getOtherFriends() == null ? null : StringUtils.join(person.getOtherFriends(), ", ")));
+                            } catch (Exception e) {
+                                System.out.println("Unable to find person '" + parameters.get("firstname") + "'.");
+                            }
 
                         }
+
+                    } else if (inputList.size() > 1 && inputList.get(1).equals("all")) {
+
+                        List<Person> people = sn.getPersonAll();
+                        for (Person person : people) {
+                            System.out.println(person.getFirstName());
+                        }
+                        System.out.println("Total number of people: " + people.size());
 
                     } else {
 
@@ -173,6 +192,7 @@ public class Main {
                     if (inputList.size() > 1 && inputList.get(1).equals("consistency")) {
 
                         // Call checkConsistency method here and display results
+                        System.out.println("Wether the data is consistent will be displayed here.");
 
                     }
 

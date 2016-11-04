@@ -1,7 +1,10 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -9,21 +12,13 @@ import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.MasterNotRunningException;
 import org.apache.hadoop.hbase.ZooKeeperConnectionException;
-import org.apache.hadoop.hbase.client.Delete;
-import org.apache.hadoop.hbase.client.Get;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.client.HTable;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.ResultScanner;
-import org.apache.hadoop.hbase.client.Scan;
-import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 
 
 public class SocialNetwork {
 
-    String tablename;
-    String[] familys;
+    String tableName;
 
     private static Configuration conf = null;
 
@@ -37,10 +32,10 @@ public class SocialNetwork {
 
     public SocialNetwork() throws Exception {
         HBaseAdmin admin = new HBaseAdmin(conf);
-        this.tablename = "flefloch";
+        tableName = "flefloch";
         if (!admin.tableExists("flefloch")){
-            String[] familys = {"info", "friends"};
-            createTable(tablename, familys);
+            String[] families = {"info", "friends"};
+            createTable(tableName, families);
         }
     }
 
@@ -84,91 +79,84 @@ public class SocialNetwork {
     public void addPerson(Person person)
             throws Exception {
 
-        HTable table = new HTable(conf, tablename);
+        HTable table = new HTable(conf, Bytes.toBytes(tableName));
 
         Put put = new Put(Bytes.toBytes(person.getFirstName()));
         if (person.getLastName() != null)
             put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("lastname"), Bytes.toBytes(person.getLastName()));
         if (person.getBirthDate() != null)
-            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("birthDate"), Bytes.toBytes(person.getBirthDate()));
+            put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("birthdate"), Bytes.toBytes(person.getBirthDate()));
         if (person.getEmail() != null)
             put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("email"), Bytes.toBytes(person.getEmail()));
         if (person.getCity() != null)
             put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("city"), Bytes.toBytes(person.getCity()));
         put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("bff"), Bytes.toBytes(person.getBff()));
         if (person.getOtherFriends() != null && !person.getOtherFriends().isEmpty()) {
-            for (String friend : person.getOtherFriends())
-                put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("others"), Bytes.toBytes(friend));
-
+            put.addColumn(Bytes.toBytes("friends"), Bytes.toBytes("others"), Bytes.toBytes(StringUtils.join(person.getOtherFriends(), ",")));
         }
         table.put(put);
     }
 
-    public void delPerson(String firstname) throws IOException {
-        HTable table = new HTable(conf, tablename);
+    public void deletePerson(String firstname) throws IOException {
+        HTable table = new HTable(conf, tableName);
         List<Delete> list = new ArrayList<Delete>();
         Delete del = new Delete(firstname.getBytes());
         list.add(del);
         table.delete(list);
     }
 
-    public List<String> getPersonAll()throws IOException{
+    public List<Person> getPersonAll()throws IOException{
         HTable table = new HTable(conf, tableName);
-        List<String> people = new ArrayList<String>();
+        List<Person> people = new ArrayList<Person>();
         Scan s = new Scan();
         ResultScanner ss = table.getScanner(s);
         for (Result rr : ss) {
-            people.add(Bytes.toString(rr.getRow());
+            try {
+                people.add(getPerson(Bytes.toString(rr.getRow())));
+            } catch (Exception e) {
+                // Should never happen
+            }
         }
-
         return people;
-
     }
 
-    public Person getPerson(String firstname) throws Exception{
-        HTable table = new HTable(conf, tablename);
-        Get get = new Get(firstname.getBytes());
+    public Person getPerson(String firstName) throws Exception{
+        HTable table = new HTable(conf, tableName);
+        Get get = new Get(firstName.getBytes());
         Result rs = table.get(get);
         if (rs.size() == 0){
             throw new Exception();
         }
         Person person = new Person (firstName, null, null, null, null, null, null);
         for(KeyValue kv : rs.raw()){
-            switch(kv.getFamily()){
-                case "info":
-                    switch (kv.getQualifier()){
-                        case "lastname": person.setLastName(Bytes.toString(kv.getValue());
-                            break;
-                        case "email": person.setEmail(Bytes.toString(kv.getValue());
-                            break;
-                        case "birthDate": person.setBirthDate(Bytes.toString(kv.getValue());
-                            break;
-                        case "city": person.setCity(Bytes.toString(kv.getValue());
-                            break;
-                    }
-                break;
-                case "friends":
-                    switch (kv.getQualifier()){
-                        case "bff": person.setBff(Bytes.toString(kv.getValue());
-                            break;
-                        case "others": person.setOtherFriends(Bytes.toString(kv.getValue());
-                    }
+            if (Bytes.toString(kv.getFamily()).equals("info")) {
+                if (Bytes.toString(kv.getQualifier()).equals("lastname")) {
+                    person.setLastName(Bytes.toString(kv.getValue()));
+                } else if (Bytes.toString(kv.getQualifier()).equals("email")) {
+                    person.setEmail(Bytes.toString(kv.getValue()));
+                } else if (Bytes.toString(kv.getQualifier()).equals("birthdate")) {
+                    person.setBirthDate(Bytes.toString(kv.getValue()));
+                } else if (Bytes.toString(kv.getQualifier()).equals("city")) {
+                    person.setCity(Bytes.toString(kv.getValue()));
+                }
+            } else if (Bytes.toString(kv.getFamily()).equals("friends")) {
+                if (Bytes.toString(kv.getQualifier()).equals("bff")) {
+                    person.setBff(Bytes.toString(kv.getValue()));
+                } else if (Bytes.toString(kv.getQualifier()).equals("others")) {
+                    person.setOtherFriends(Arrays.asList(Bytes.toString(kv.getValue()).split(",")));
+                }
             }
-
         }
         return person;
-
     }
 
-
     public boolean personExists(String firstname) throws IOException {
-        HTable table = new HTable(conf, tablename);
+        HTable table = new HTable(conf, tableName);
         Get get = new Get(firstname.getBytes());
         Result result = table.get(get);
         if (result.size() == 0){
             return false;
         } else {return true;}
     }
-
 
 }
