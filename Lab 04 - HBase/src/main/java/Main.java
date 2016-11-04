@@ -17,7 +17,7 @@ public class Main {
             System.exit(1);
         }
 
-        System.out.println("Welcome to our HBase REPL.");
+        System.out.println("\nWelcome to our HBase REPL.\n");
 
         sn.getAllRecord("flefloch");
 
@@ -30,6 +30,9 @@ public class Main {
                          + "           [email=<string>]\n"
                          + "           [otherfriends=<string>,<string>,<string>]"
         );
+        System.out.println("delete person firstname=<string>");
+        System.out.println("show person firstname=<string>");
+        System.out.println("check consistency");
         System.out.println("exit");
 
         boolean exit = false;
@@ -68,6 +71,7 @@ public class Main {
 
                         parameters.keySet().retainAll(validKeys);
                         parameters.values().removeAll(Collections.singleton(null));
+
                         if (!parameters.keySet().containsAll(necessaryKeys)) {
 
                             System.out.println("The following parameters must be included: " + StringUtils.join(necessaryKeys, ", "));
@@ -91,6 +95,84 @@ public class Main {
                     } else {
 
                         System.out.println("Unknown use of the 'add' command.");
+
+                    }
+
+                } else if (inputList.get(0).equals("delete")) {
+
+                    if (inputList.size() > 1 && inputList.get(1).equals("person")) {
+
+                        Map<String, String> parameters = new HashMap<String, String>();
+                        for (int i = 2; i < inputList.size(); i++) {
+                            String[] splitParameters = inputList.get(i).split("=", 2);
+                            parameters.put(inputList.get(i).split("=", 2)[0], inputList.get(i).split("=", 2)[1]);
+                        }
+
+                        Set<String> validKeys = new HashSet<String>();
+                        validKeys.add("firstname");
+
+                        Set<String> necessaryKeys = new HashSet<String>();
+                        necessaryKeys.add("firstname");
+
+                        parameters.keySet().retainAll(validKeys);
+                        parameters.values().removeAll(Collections.singleton(null));
+
+                        if (!parameters.keySet().containsAll(necessaryKeys)) {
+
+                            System.out.println("The following parameters must be included: " + StringUtils.join(necessaryKeys, ", "));
+
+                        } else {
+
+                            // Call deletePerson method here
+
+                        }
+
+                    } else {
+
+                        System.out.println("Unknown use of the 'delete' command.");
+
+                    }
+
+                } else if (inputList.get(0).equals("show")) {
+
+                    if (inputList.size() > 1 && inputList.get(1).equals("person")) {
+
+                        Map<String, String> parameters = new HashMap<String, String>();
+                        for (int i = 2; i < inputList.size(); i++) {
+                            String[] splitParameters = inputList.get(i).split("=", 2);
+                            parameters.put(inputList.get(i).split("=", 2)[0], inputList.get(i).split("=", 2)[1]);
+                        }
+
+                        Set<String> validKeys = new HashSet<String>();
+                        validKeys.add("firstname");
+
+                        Set<String> necessaryKeys = new HashSet<String>();
+                        necessaryKeys.add("firstname");
+
+                        parameters.keySet().retainAll(validKeys);
+                        parameters.values().removeAll(Collections.singleton(null));
+
+                        if (!parameters.keySet().containsAll(necessaryKeys)) {
+
+                            System.out.println("The following parameters must be included: " + StringUtils.join(necessaryKeys, ", "));
+
+                        } else {
+
+                            // Call getPerson method here and display the person
+
+                        }
+
+                    } else {
+
+                        System.out.println("Unknown use of the 'show' command.");
+
+                    }
+
+                } else if (inputList.get(0).equals("check")) {
+
+                    if (inputList.size() > 1 && inputList.get(1).equals("consistency")) {
+
+                        // Call checkConsistency method here and display results
 
                     }
 
