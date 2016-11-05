@@ -54,7 +54,7 @@ Type in the HQL queries from lab2bis.hql as needed.
 ## Lab 04
 
 ### Objective
-Write a simplistic social network app accessing an HBase database.*
+Write a simplistic social network app accessing an HBase database.
 
 Write a REPL that allows interaction with this database.
 
