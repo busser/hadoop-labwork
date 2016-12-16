@@ -49,24 +49,30 @@
 \renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
 \renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
 
+%%% Font
+%%%{\fontfamily{pnc
+
 %%% END Article customizations
 
 %%% The "real" document content comes below...
 
-\title{Brief Article}
-\author{The Author}
+\title{Dynamically adding nodes to Hadoop Clusters}
+\author{Floriane Le Floch - Arthur Busser - Paul Dennetiere}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
 
 \begin{document}
+
 \maketitle
+\renewcommand{\contentsname}{Summary}
+\newpage
 
-\section{First section}
 
-Your text goes here.
+\tableofcontents
+\newpage
 
-\subsection{A subsection}
-
-More text.
+\part{Introduction}
+\part{Our solution}
+\part{Difficulties that we expect to encounter}
 
 \end{document}
