@@ -1,0 +1,5 @@
+# No temp Latex files
+*.aux
+*.log
+*.synctex.gz
+*.toc
