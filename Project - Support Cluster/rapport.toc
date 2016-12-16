@@ -1,5 +1,0 @@
-\contentsline {part}{I\hspace {1em}Introduction}{2}
-\contentsline {part}{II\hspace {1em}Our solution}{3}
-\contentsline {part}{III\hspace {1em}Difficulties that we expect to encounter}{4}
-\contentsline {chapter}{\numberline {1}Redundancy Problems}{5}
-\contentsline {section}{\numberline {1.1}What we expect to happen}{5}
