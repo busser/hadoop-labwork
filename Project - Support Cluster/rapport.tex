@@ -50,6 +50,12 @@
 \renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
 \renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
 
+\makeatletter
+\@addtoreset{section}{chapter}
+\@addtoreset{subsection}{chapter}
+\@addtoreset{subsubsection}{chapter}
+\makeatother
+
 %%% Font
 %%%{\fontfamily{pnc
 
@@ -74,6 +80,16 @@
 
 \part{Introduction}
 \part{Our solution}
+\chapter{Master}
+\section{Section master1}
+Because of bla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla bla
+\section{Section master2}
+Because of bla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla bla
+\chapter{Slave}
+\section{Section slave1}
+Because of bla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla bla
+\section{Section slave2}
+Because of bla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla bla
 \part{Difficulties that we expect to encounter}
 \chapter{Redundancy Problems}
 \section{What we expect to happen}
