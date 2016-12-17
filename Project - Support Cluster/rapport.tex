@@ -66,8 +66,6 @@
 \makeatother
 
 %%% Font
-%\usepackage[T1]{fontenc}
-%\usepackage[default]{raleway}
 \usepackage{fontspec}
 \setmainfont{Comic Sans MS}
 
@@ -76,6 +74,9 @@
 \edef\restoreparindent{\parindent=\the\parindent\relax}
 \usepackage{parskip}
 \restoreparindent
+
+%%% Rename chapters
+\renewcommand{\chaptername}{Part}
 
 %%% The "real" document content comes below...
 
@@ -221,7 +222,7 @@ In conclusion, docker is a tool (application container) that will allow us to ru
 
 However we can easily imagine that many difficulties will come up, and we will discuss them below.
 
-\chapter{Difficulties}
+\chapter{Foreseen difficulties}
 
 We expect to encounter several difficulties with our system. This part will enumerate them and provide a way to solve them.
 
