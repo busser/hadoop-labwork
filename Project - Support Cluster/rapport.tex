@@ -198,9 +198,41 @@ In conclusion, docker is a tool (application container) that will allow us to ru
 
 However we can easily imagine that many difficulties will come up, and we will discuss them below.
 
-\part{Difficulties that we expect to encounter}
-\chapter{Redundancy Problems}
-\section{What we expect to happen}
-Because of bla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla blabla bla bla
+\part{Difficulties}
+
+We expect to encounter several difficulties with our system. This part will ennumerate them and the way for solve them.
+
+\section{Redundancy Problems}
+When a computer is not used, it joins the cluster and some data are stored on it. But when the user comes back, these data won't be available for the cluster anymore. To face this availability problem, we have to prevent HDFS from storing all the replicas on the temporary nodes. Only one copy should be stored on a temporary node and the others on permanent nodes.
+
+To achieve this goal, we can modify the standard HDFS algorithm which chooses the nodes for the replication. The class in charge of this choice is : ReplicationTargetChooser (org.apache.hadoop.hdfs.server.namenode.ReplicationTargetChooser). By default, the replica placement strategy is that if the writer is on a datanode, the 1st replica is placed on the local machine, otherwise a random datanode. The 2nd replica is placed on a datanode that is on a different rack. The 3rd replica is placed on a datanode which is on the same rack as the first replca. If there are more replicas, they are spread across the rest of the racks.
+We can add two distinct groups to the regular parameters: temporary nodes and permanent nodes. Then during the replication, the algorithm is allowed to choose at most one target in the temporary group.
+
+
+\section{Backlist}
+
+The JobTracker submit jobs to the different nodes through their TaskTracker. But if the TaskTracker fails too many times, it can be blacklisted and don't receive any jobs anymore (no impact on files replication). This is an issue because our computers can be used by a user at anytime and fail to execute its job. This node will then become unused for MapReduce and we loose the main advantage of this project.
+To solve this problem there are different possibilities.
+
+
+Firstly we can manually remove a node from the blacklist : 
+\begin{lstlisting}
+hadoop job -unblacklist-tracker <hostname>
+\end{lstlisting}
+By executing this command every day for our temporary nodes written on the list, we can prevent them from being blacklisted for too long.
+
+Secondly, we can prevent them to be blacklisted by safely removing them from the cluster.
+Usualy in a company, most of the employees arrive at a predictible hour. We can plan to remove the temporary nodes a little before that time thanks to the decommissioning feature.
+This can also allow us to make sure that no data is lost because of a suddenly shut down of the Docker container. To do that we need a script to execute the following steps dynamically:
+\begin{itemize}
+\item We have to add our nodes to the exclude group in the conf/hadoop-site.xml file. They won't be permitted to connect to the NameNode anymore. They will have enough time to finish their tasks and to be replicated on machines which are scheduled to remain active.
+\item Force configuration reload to make sure that HDFS is aware of the changes by running:
+\begin{lstlisting}
+bin/hadoop dfsadmin -refreshNodes
+\end{lstlisting}
+\item Removing the temporary nodes from the exclude list so they can connect to the NameNode the next time.
+\end{itemize}
+
+This solution is efficient only if we can predict the time when computers will be used. We need to make sure than HDFS can handle the lost of huge number of nodes simultaneously.
 
 \end{document}
