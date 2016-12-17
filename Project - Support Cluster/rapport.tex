@@ -88,6 +88,24 @@
 \newpage
 
 \part{Introduction}
+
+\section{Personal computers}
+In 2008, approximately 1 billion personal computers were in use worldwide. Today, that number stands above 2 billion\footnote{Source: Forrester Research}. In the United States of America, Japan, Germany, the United Kingdom, France, and Italy, the number of PCs gets closer to the number of inhabitants every year\footnote{Source: Computer Industry Almanac Inc.}.
+
+In 2016, more than half (50.1\%) of the world's population was an Internet user\footnote{Source: http://www.internetworldstats.com/}. In this Information Age, most computers are connected to each other and can easily communicate. Countless companies rely on computers for communication, marketing, accounting, storage, documents and reports, education, and research.
+
+As things stand, personal computers used for work and/or personal activities add up to an immense amount of processing power and that amount is growing continuously.
+
+\section{The problem}
+Very few people use the full computing capabilities of their PCs. Even then, there are long periods of time every day when PCs are left unused. In many companies, almost every employee is provided with a PC. At night, desktop computers - and laptops too - are often left on, staying idle until their user returns in the morning. During this time, those PCs could be doing something.
+
+The main problem with personal computers is that they are personal. The average person will never use the full potential of their PC, simply because most of the time they will not be using it. This results in a huge amount of processing power going to waste. If only the computer's capabilities could be shared somehow...
+  
+\section{Our idea}
+As we stated above, most computers are connected and can easily communicate with each other. Many professionals have used this to their advantage, organizing computers into clusters that could tackle computation problems as a whole.
+
+Our idea is to create a tool that, once installed on a personal computer, would wait for the PC to be unused to connect it to a remote computer cluster. The cluster could then use the new node's processing power to advance in its current calculations. When the PC would once again need to be used, it would disconnect from the cluster and continue as it normally does.
+
 \part{Our solution}
 \vspace*{\stretch{1}}
 We want to make unused computers available for an Hadoop Cluster. In order to do that, we want to check at regular intervals if a computer is used or not (i.e. is in sleep mode). Our goal is to dynamically adding sleeping computer to the cluster, in order to make more ressources available.
