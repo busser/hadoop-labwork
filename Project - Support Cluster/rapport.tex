@@ -67,6 +67,11 @@
 
 %%% Font
 
+%%% Spacing between paragraphs
+\edef\restoreparindent{\parindent=\the\parindent\relax}
+\usepackage{parskip}
+\restoreparindent
+
 %%% The "real" document content comes below...
 
 \title{Supporting a Hadoop Cluster with IT Stock}
