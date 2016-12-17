@@ -92,7 +92,7 @@
 \tableofcontents
 \newpage
 
-\part{Introduction}
+\chapter{Introduction}
 
 \section{Personal computers}
 In 2008, approximately 1 billion personal computers were in use worldwide. Today, that number stands above 2 billion\footnote{Source: Forrester Research}. In the United States of America, Japan, Germany, the United Kingdom, France, and Italy, the number of PCs gets closer to the number of inhabitants every year\footnote{Source: Computer Industry Almanac Inc.}.
@@ -111,14 +111,11 @@ As we stated above, most computers are connected and can easily communicate with
 
 Our idea is to create a tool that, once installed on a personal computer, would wait for the PC to be unused to connect it to a remote computer cluster. The cluster could then use the new node's processing power to advance in its current calculations. When the PC would once again need to be used, it would disconnect from the cluster and continue as it normally does.
 
-\part{Our solution}
-\vspace*{\stretch{1}}
+\chapter{Our solution: Setting up a DataNode on an unused computer}
 We want to make unused computers available for a Hadoop Cluster. In order to do that, we want to check at regular intervals if a computer is used or not (i.e. is in sleep mode). Our goal is to dynamically add sleeping computer to the cluster, in order to make more resources available.
 
 In order to achieve this, we will have to ensure several things. This part will deal with the general structure, and what this structure induces for the cluster and added computers.
-\vspace*{\stretch{1}}
 
-\chapter{Setting up a DataNode on an unused computer}
 First we will have to make the computer we want to add able to communicate with the Master (NameNode). We have several options to achieve this: \begin{itemize}
 \item Virtualization
 \item Use only linux distributions
@@ -203,7 +200,7 @@ In conclusion, docker is a tool (application container) that will allow us to ru
 
 However we can easily imagine that many difficulties will come up, and we will discuss them below.
 
-\part{Difficulties}
+\chapter{Difficulties}
 
 We expect to encounter several difficulties with our system. This part will ennumerate them and the way for solve them.
 
