@@ -48,16 +48,16 @@
 \lfoot{}\cfoot{\thepage}\rfoot{}
 
 %%% SECTION TITLE APPEARANCE
-\usepackage{sectsty}
-\usepackage{indentfirst}
-\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+%\usepackage{sectsty}
+%\usepackage{indentfirst}
+%\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
 % (This matches ConTeXt defaults)
 
 %%% ToC (table of contents) APPEARANCE
-\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
-\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
-\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
-\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+%\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+%\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+%\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+%\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
 
 \makeatletter
 \@addtoreset{section}{chapter}
@@ -66,6 +66,11 @@
 \makeatother
 
 %%% Font
+%\usepackage[T1]{fontenc}
+%\usepackage[default]{raleway}
+\usepackage{fontspec}
+\setmainfont{Comic Sans MS}
+
 
 %%% Spacing between paragraphs
 \edef\restoreparindent{\parindent=\the\parindent\relax}
